@@ -1,32 +1,37 @@
 import requests
 
 headers = {
-    'authority': 'api.composer.nprstations.org',
-    'sec-ch-ua': '" Not;A Brand";v="99", "Google Chrome";v="97", "Chromium";v="97"',
-    'accept': 'application/json, text/javascript, */*; q=0.01',
-    'sec-ch-ua-mobile': '?1',
-    'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Mobile Safari/537.36',
-    'sec-ch-ua-platform': '"Android"',
-    'origin': 'https://kutx.org',
-    'sec-fetch-site': 'cross-site',
-    'sec-fetch-mode': 'cors',
-    'sec-fetch-dest': 'empty',
-    'referer': 'https://kutx.org/',
-    'accept-language': 'en-US,en;q=0.9',
+    'authorization':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDM3Nzk1ODIsInByaW5jaXBhbCI6eyJpZCI6Mjc2NDA1NzA2NTkwMjA0OTEwNSwibmFtZSI6IkNDMiIsImVtYWlsX2FkZHJlc3MiOiJlbmdpbmVlcmluZysyMDIyMDIwMUByZXZlYWxtb2JpbGUuY29tIiwib3JnYW5pemF0aW9uIjoyMTg1MjkxNzQ3NTc4MzQ4ODMxLCJhZG1pbmlzdHJhdG9yIjpmYWxzZSwicm9sZSI6IkNvbnRyaWJ1dG9yIn19.DtzbDnciP_CDU9vJYvCWEjat6c_dJSHaK_fRIXiSjos',
 }
 
 params = (
-    ('date', '2022-01-31'),
     ('format', 'json'),
 )
 
 def main():
-  response = requests.get('https://api.composer.nprstations.org/v1/widget/50ef24ebe1c8a1369593d032/day', headers=headers, params=params)
-  print(response.text)
-#NB. Original query string below. It seems impossible to parse and
-#reproduce query strings 100% accurately so the one below is given
-#in case the reproduced version is not "correct".
-# response = requests.get('https://api.composer.nprstations.org/v1/widget/50ef24ebe1c8a1369593d032/day?date=2022-01-31&format=json', headers=headers)
+
+  response = requests.get('https://gateway-service.revealmobile.com/report/campaign/3544/conversion/daily', headers=headers, params=params)
+  res = response.json()
+  rows = res['data']['rows']
+  total_conversions = 0
+  total_conversions_primary = 0
+  total_conversions_household = 0
+  unique_dates = set()
+
+  for row in rows:
+    conversions = row['metrics']['Conversion Count']
+    total_conversions += conversions
+    if 'primary' in row['dimensions']['Device Type']:
+        total_conversions_primary += conversions
+    elif 'household' in row['dimensions']['Device Type']:
+        total_conversions_household += conversions
+    unique_dates.add(row['dimensions']['Date']
+
+  # print(total_conversions)
+  # print(total_conversions_primary)
+  # print(total_conversions_household)
+  # print(unique_dates)
 
 if __name__ == "__main__":
-  main()
+    main()
+

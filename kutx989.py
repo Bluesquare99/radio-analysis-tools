@@ -18,7 +18,7 @@ headers = {
 }
 
 params = (
-    ('date', '2022-01-31'),
+    ('date', '2018-01-28'),
     ('format', 'json'),
 )
 
@@ -68,12 +68,9 @@ def main():
       split_by_comma = x.split(',')
       # print(split_by_comma)
 
-      
       hour = ''
       track = ''
       artist = ''
-
-
 
       for i in split_by_comma:
         if 'start_time' in i:
@@ -87,7 +84,7 @@ def main():
       songs['date'][str(hour)].append([track, artist])  
       # print(f'{hour}, {track}, {artist}')
 
-  print(songs['date']['01'])
+  print(songs['date'])
 
 if __name__ == "__main__":
   main()
