@@ -1,39 +1,30 @@
 from selenium import webdriver
+import time
 
-PATH = '/Users/bluesquarez/Documents/Coding/Resources/chromedriver'
-driver = webdriver.Chrome(PATH)
+def get_playlist(show_cleaned):
 
-driver.get('https://techwithtim.net')
-print(driver.title)
-driver.quit()
-
-
-
+	url = 'https://koop.org/programs/' + show_cleaned
+	PATH = '/Users/bluesquarez/Documents/Coding/Resources/chromedriver'
+	driver = webdriver.Chrome(PATH)
+	driver.get(url)
 
 
+	playlist_raw = driver.find_element_by_class_name("js-programPlaylist")
+	songs = playlist_raw.text.split('\n')
+	playlist = {}
 
+	for song in songs:
+		song_split = song.split('-')
+		artist = song_split[0].strip()
+		track = song_split[1].split('(')[0].strip()
+		playlist[artist] = track
 
+	driver.quit()
+	print(playlist)
 
-
-
-
-
-# import requests
-# import bs4
-# import lxml
-
-# def get_playlist(show_cleaned):
-
-# 	url = 'https://koop.org/programs/' + show_cleaned + '/#playlists'
-# 	result = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
-# 	print(result)
-# 	soup = bs4.BeautifulSoup(result.text,'lxml')
-# 	print(soup.prettify())
-
-
-# def main():
-# 	get_playlist('the-lounge-show')
+def main():
+	get_playlist('the-lounge-show')
 	
 
-# if __name__ == "__main__":
-# 	main()
+if __name__ == "__main__":
+	main()
