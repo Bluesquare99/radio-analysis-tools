@@ -8,8 +8,11 @@ def get_playlist(show_cleaned):
 	driver = webdriver.Chrome(PATH)
 	driver.get(url)
 
-
+	if(driver.find_element_by_class_name("js-programPlaylist") == ''):
+		return
 	playlist_raw = driver.find_element_by_class_name("js-programPlaylist")
+	if(playlist_raw.text == ''):
+		return
 	songs = playlist_raw.text.split('\n')
 	playlist = {}
 
@@ -20,11 +23,8 @@ def get_playlist(show_cleaned):
 		playlist[artist] = track
 
 	driver.quit()
-	print(playlist)
 
-def main():
-	get_playlist('the-lounge-show')
-	
+	return(playlist)
 
 if __name__ == "__main__":
-	main()
+	print('Get playlists is being called directly')
