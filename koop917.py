@@ -11,9 +11,26 @@ def main():
 		show_cleaned = re.sub('[^0-9a-zA-Z]+','-',show_name.replace("'",'').lower().strip())
 		return show_cleaned
 
+	# v = 'Rag Radio'
+
+	# try:
+	# 	print(clean_url(v))
+	# 	print(playlists.get_playlist(clean_url(v)))
+	# except Exception as e:
+		
+		
 	for day in schedule:
 		for k, v in schedule[day].items():
-			# if(
+			try:
+				print(clean_url(v))
+				print(playlists.get_playlist(clean_url(v)))
+			except Exception as e:
+				print('This error comes from koop917.py')
+				print(e)
+if __name__ == "__main__":
+	main()
+
+		# if(
 			# 	# clean_url(v) == 'nobody-s-happy-hour' 
 			# 	clean_url(v) == 'austin-artist-collective'
 			# 	or clean_url(v) == 'bringing-light-into-darkness'
@@ -32,13 +49,3 @@ def main():
 			# 	or clean_url(v) == 'people-united'
 			# 	or clean_url(v) == 'rag-radio'):
 			# 	continue
-			try:
-				print(clean_url(v))
-				print(playlists.get_playlist(clean_url(v)))
-			except Exception as e:
-				print(e)
-		
-# print(playlists.get_playlist(clean_url(v)))
-
-if __name__ == "__main__":
-	main()

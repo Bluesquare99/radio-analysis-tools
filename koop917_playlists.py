@@ -9,6 +9,7 @@ def get_playlist(show_cleaned):
 	try:
 		driver.get(url)
 	except Exception as e:
+		print("URL didn't open")
 		print(e)
 
 	# if(driver.find_element_by_class_name("js-programPlaylist") == ''):
@@ -16,6 +17,7 @@ def get_playlist(show_cleaned):
 	try:
 		playlist_raw = driver.find_element_by_class_name("js-programPlaylist")
 		if(playlist_raw.text == ''):
+			print(f'{show_cleaned} is likely a musical show but playlist is not shown')
 			return
 		songs = playlist_raw.text.split('\n')
 		playlist = {}
@@ -28,7 +30,7 @@ def get_playlist(show_cleaned):
 		
 		return(playlist)
 	except Exception as e:
-		print(e)
+		print(f'The program {show_cleaned} does not have a playlist and is therefore likely not a musical show')
 	finally:
 		driver.quit()
 
