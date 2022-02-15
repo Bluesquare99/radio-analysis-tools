@@ -84,7 +84,8 @@ def main():
       songs['date'][str(hour)].append([track, artist])  
       # print(f'{hour}, {track}, {artist}')
 
-  print(songs['date'])
+  # print(songs['date'])
+  return songs['date']
 
 if __name__ == "__main__":
   main()

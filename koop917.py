@@ -1,6 +1,8 @@
 import koop917schedule as show_schedule
 import koop917_playlists as playlists
 import re
+from datetime import date
+import csv
 
 def main():
 
@@ -10,42 +12,43 @@ def main():
 		show_name_no_apostrophes = show_name.replace("'",'')		
 		show_cleaned = re.sub('[^0-9a-zA-Z]+','-',show_name.replace("'",'').lower().strip())
 		return show_cleaned
+	weekday = '';
+	time = '';
+	show = '';
+	date_scraped = date.today()
+	songs_played = ''
 
-	# v = 'Rag Radio'
+	with open('koop917.csv', mode='w') as csv_file:
+		fieldnames = ['weekday','time','show','date_scraped','songs_played']
+		writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
-	# try:
-	# 	print(clean_url(v))
-	# 	print(playlists.get_playlist(clean_url(v)))
-	# except Exception as e:
+		writer.writeheader()
+		for day in schedule:
+			weekday = day
+			for k, v in schedule[day].items():
+				time = k
+				show = v
+				try:
+					songs_played = playlists.get_playlist(clean_url(v))
+				except Exception as e:
+					print('This error comes from koop917.py')
+					print(e)
+				finally:
+					if(songs_played == None):
+						print("It's reached none")
+						continue
+					writer.writerow({'weekday': day, 'time':time, 'date_scraped':date_scraped, 'show':show, 'songs_played':songs_played})
+
 		
-		
-	for day in schedule:
-		for k, v in schedule[day].items():
-			try:
-				print(clean_url(v))
-				print(playlists.get_playlist(clean_url(v)))
-			except Exception as e:
-				print('This error comes from koop917.py')
-				print(e)
+
+
 if __name__ == "__main__":
 	main()
 
-		# if(
-			# 	# clean_url(v) == 'nobody-s-happy-hour' 
-			# 	clean_url(v) == 'austin-artist-collective'
-			# 	or clean_url(v) == 'bringing-light-into-darkness'
-			# 	or clean_url(v) == 'lost-in-paradise-radio'
-			# 	or clean_url(v) == 'the-sex-ed-show'
-			# 	or clean_url(v) == 'the-austin-common-radio-hour'
-			# 	or clean_url(v) == 'civil-rights-and-wrongs'
-			# 	or clean_url(v) == 'off-stage-and-on-the-air'
-			# 	or clean_url(v) == 'texas-music-office-s-texas-music-mixtape'
-			# 	# or clean_url(v) == 'crate-digger-s-gold'
-			# 	or clean_url(v) == 'the-stopped-clock'
-			# 	or clean_url(v) == 'texchromosome-radio'
-			# 	# or clean_url(v) == 'what-s-new'
-			# 	or clean_url(v) == 'lights-camera-austin'
-			# 	# or clean_url(v) == 'pearl-s-general-store'
-			# 	or clean_url(v) == 'people-united'
-			# 	or clean_url(v) == 'rag-radio'):
-			# 	continue
+# WHAT NEXT
+# 1 Create a simple Python script that can prove usefulness of Cron
+# 3 Create a stations folder
+#		Place within this each station's collection of scripts
+#		I'll have to use the 
+# Execute that via Cron to see where it gets you
+# 2 Watch YouTube video on automating job for another interpretation of how to do so
