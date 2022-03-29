@@ -1,12 +1,11 @@
 import requests
 import bs4
-import lxml
 
 def get_schedule():
 
 	result = requests.get('https://koop.org/shows/', headers={'User-Agent': 'Mozilla/5.0'})
 
-	soup = bs4.BeautifulSoup(result.text,'lxml')
+	soup = bs4.BeautifulSoup(result.text, "html.parser")
 	time_slots = soup.select('tbody tr')
 	days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 

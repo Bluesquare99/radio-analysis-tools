@@ -4,16 +4,12 @@ from dotenv import load_dotenv
 import uuid
 
 
-# DATABASE_URL = os.environ['DATABASE_URL']
+
 
 def write_to_pg(song_entry):
   load_dotenv()
-  con = psycopg2.connect(
-    host=os.environ['HOST'], 
-    database=os.environ['DATABASE'], 
-    user=os.environ['USER'], 
-    password=os.environ['PASSWORD'],
-    sslmode='require')
+  DATABASE_URL = os.environ['DATABASE_URL']
+  con = psycopg2.connect(DATABASE_URL, sslmode='require')
   cur = con.cursor()
     # Defining insert statement
   sql_insert_query = """ INSERT INTO playlists (playlist_song_id, station, show, date, artist, track) VALUES (%s, %s, %s, %s, %s, %s) """
