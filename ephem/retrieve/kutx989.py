@@ -92,15 +92,3 @@ def main():
 
 if __name__ == "__main__":
   main()
-
-
-  '''
-	XX. Explore further how to set up vscode for python, even if just to have as an option
-	XX. Make selenium headless in koop917 so it doesn't keep fucking popping up
-	XX. Automate with Airplane
-  4. Write to a database not a CSV file
-	5. Organize the code in the folder better
-  6. Deploy both to Heroku
-  7. Write one more scraping script
-
-'''

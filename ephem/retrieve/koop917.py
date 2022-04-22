@@ -15,35 +15,34 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
+	# write to db
+import write
+
 
 def main():
-	song_entry = {
-		'station': 'koop917'
-	}
+	song = { 'station': 'koop917'}
 	schedule = get_schedule()
 	for day in schedule:
-			# Retrieving date for today or past week
+		# Retrieving date for today or past week
 		if(parse(day).strftime('%m %d %Y') == parse("Today").strftime('%m %d %Y')):
-			song_entry['date'] = parse(day).strftime('%m %d %Y') or ''
+			song['date'] = parse(day).strftime('%Y-%m-%d') or ''
 		else:
-			song_entry['date'] = parse(day, settings={'PREFER_DATES_FROM': 'past'}).strftime('%m %d %Y') or ''
-			# Retrieving playlist for each show 
+			song['date'] = parse(day, settings={'PREFER_DATES_FROM': 'past'}).strftime('%Y-%m-%d') or ''
+		# Retrieving playlist for each show 
 		for k, v in schedule[day].items():
-			# song_entry['time'] = k or ''
-			song_entry['show'] = v or ''
+			# song['time'] = k or ''
+			song['show'] = v or ''
 			try:
 				songs_played = get_playlist(clean_url(v))
 				for artist, track in songs_played.items():
-					song_entry['artist'] = artist or ''
-					song_entry['track'] = track or ''
-					# interact_with_pg.write_to_pg(song_entry)
+					song['artist'] = artist or ''
+					song['track'] = track or ''
+					write.pg(song)
 			except Exception as e:
 				print('This error comes from koop917.py', e)
 			finally:
 				if(songs_played == None):
 					print("It's reached none")
-				print(song_entry)
-				return song_entry
 
 def get_schedule():
 	result = requests.get('https://koop.org/shows/', headers={'User-Agent': 'Mozilla/5.0'})
