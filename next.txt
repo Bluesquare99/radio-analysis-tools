@@ -1,0 +1,4 @@
+Make sure kutx is scraping correctly, including finding the names of each show
+Automate scraping to be each day or the like
+Add a pattern to not add to db if already there
+Add a third station, perhaps in the Texas region
