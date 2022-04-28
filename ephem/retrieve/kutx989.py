@@ -23,17 +23,17 @@ headers = {
 }
 
 params = (
-    ('date', '2018-01-28'),
+    ('date', '2022-04-27'),
     ('format', 'json'),
 )
 
 def main():
-  day = wkshows()
-  
+  day = wkshows()  
   response = requests.get('https://api.composer.nprstations.org/v1/widget/50ef24ebe1c8a1369593d032/day', headers=headers, params=params)
   soup = bs4(response.text,'lxml')
   # print(soup)
   p_tags = soup.select('body p')[0]
+  # print(p_tags)
 
   # print(p_tags.contents[0].string[0:2000])
   split_by_curly = p_tags.contents[0].string.split('{')
@@ -90,7 +90,7 @@ def main():
           song["artist"] = artist
           song["track"] = track
           print(song)
-          write.pg(song)
+          # write.pg(song)
       #   print(show["start"], show["end"])
       # print(hour, track, artist)
 
@@ -101,10 +101,12 @@ def main():
 def wkshows():
   day = []
   today = calendar.day_name[date.today().weekday()].lower()
-  id = f"kutx-{today}"
+  wkday = f"kutx-{today}"
   response = requests.get('https://kutx.org/program-schedule/', headers=headers, params=params)
   soup = bs4(response.text,'lxml')
-  shows = soup.find("div", id=id).find_all("div", class_="kutx-schedule-list-item")
+  shows = soup.find("div", id=wkday).find_all("div", class_="kutx-schedule-list-item")
+  print(wkday)
+  print(shows)
   for show in shows:
     name = show.find("div", class_="kutx-schedule-list-host")
     if(name):
