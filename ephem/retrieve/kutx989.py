@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup as bs4
 import lxml
 from datetime import date
 import calendar
-import write
+from . import write
 
 headers = {
     'authority': 'api.composer.nprstations.org',
