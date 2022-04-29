@@ -5,8 +5,6 @@ from datetime import date
 import calendar
 import write
 
-
-
 headers = {
     'authority': 'api.composer.nprstations.org',
     'sec-ch-ua': '" Not;A Brand";v="99", "Google Chrome";v="97", "Chromium";v="97"',
@@ -23,7 +21,7 @@ headers = {
 }
 
 params = (
-    ('date', '2022-04-27'),
+    ('date', str(date.today().strftime('%Y-%m-%d'))),
     ('format', 'json'),
 )
 
@@ -31,43 +29,10 @@ def main():
   day = wkshows()  
   response = requests.get('https://api.composer.nprstations.org/v1/widget/50ef24ebe1c8a1369593d032/day', headers=headers, params=params)
   soup = bs4(response.text,'lxml')
-  # print(soup)
   p_tags = soup.select('body p')[0]
-  # print(p_tags)
+  splat = p_tags.contents[0].string.split('{')
 
-  # print(p_tags.contents[0].string[0:2000])
-  split_by_curly = p_tags.contents[0].string.split('{')
-  dayt = []
-  songs = {
-    'dayt': {
-      '00':[],
-      '01':[],
-      '02':[],
-      '03':[],
-      '04':[],
-      '05':[],
-      '06':[],
-      '07':[],
-      '08':[],
-      '09':[],
-      '10':[],
-      '11':[],
-      '12':[],
-      '13':[],
-      '14':[],
-      '15':[],
-      '16':[],
-      '17':[],
-      '18':[],
-      '19':[],
-      '20':[],
-      '21':[],
-      '22':[],
-      '23':[]
-    }
-  }
-
-  for x in split_by_curly:
+  for x in splat:
     if 'trackName' in x and not 'itunes' in x:
       song = { 'station': 'kutx989'}
       split_by_comma = x.split(',')
@@ -81,8 +46,7 @@ def main():
           track = i.split(':')[1].strip('"')
         if 'artistName' in i:
           artist = i.split(':')[1].strip('"')
-        
-      songs['dayt'][str(hour)].append([track, artist])  
+  
       for show in day:
         if(int(hour) >= int(show["start"]) and int(hour) < int(show["end"])):
           song["show"] = show["title"]
@@ -90,13 +54,7 @@ def main():
           song["artist"] = artist
           song["track"] = track
           print(song)
-          # write.pg(song)
-      #   print(show["start"], show["end"])
-      # print(hour, track, artist)
-
-  # # print(songs['date'])
-  # print(songs['date'])
-  # return songs['date']
+          write.pg(song)
 
 def wkshows():
   day = []
@@ -144,9 +102,3 @@ def wkshows():
 
 if __name__ == "__main__":
   main()
-
-  # You can return data to show outputs to users.
-    # Outputs documentation: https://docs.airplane.dev/tasks/outputs
-    # return [
-    #     {"songs": songs['date']}
-    # ]

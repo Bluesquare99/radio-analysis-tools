@@ -1,4 +1,7 @@
-Make sure kutx is scraping correctly, including finding the names of each show
+Clean up kutx script and make it relevant to that day
 Automate scraping to be each day or the like
+
+-- Start reading in from spotify --
+
 Add a pattern to not add to db if already there
 Add a third station, perhaps in the Texas region
